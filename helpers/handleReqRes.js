@@ -50,7 +50,7 @@ handler.handleReqRes = (req, res) => {
          const payloadString = JSON.stringify(payload);
 
          //return the final response
-         res.wirteHead(statusCode);
+         res.statusCode = statusCode;
          res.end(payloadString);
     })
  /*

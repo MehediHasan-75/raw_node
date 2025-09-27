@@ -2,7 +2,9 @@
 const handler = {};
 
 handler.notFoundHandler = (requestProperties, callback)=> {
-    console.log('404 Not Found!');
-}
+    callback(404,{
+        messsage: "404 not found!",
+    });
+};
 
 module.exports = handler;
