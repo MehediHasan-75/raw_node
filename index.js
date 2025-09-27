@@ -1,7 +1,7 @@
 //dependencies
 const http = require('http');
 const url = require('url');
-const { queryObjects } = require('v8');
+const {StringDecoder} = require('string_decoder');
 //app object - module scaffolding
 const app ={};
 
@@ -48,9 +48,21 @@ app.handleReqRes = (req, res) => {
     const method = req.method.toLowerCase();
     const queryStringObject = parsedUrl.query;
     const headerObject = req.headers;
-     // console.log(parsedUrl); 
+    
+    const decoder = new StringDecoder('utf-8');
+    let data = "";
+
+    req.on('data', (buffer) => {
+        data += decoder.write(buffer);
+    })
+
+    req.on('end', ()=>{
+        data += decoder.end();
+        console.log(data);
+        res.end("Hello world");
+    })
     //response handle . any request will get response "Hello world"
-    res.end("Hello world");
+
 }
 
 //start the server
