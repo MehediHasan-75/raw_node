@@ -24,7 +24,7 @@ handler.handleReqRes = (req, res) => {
     */
     const parsedUrl = url.parse(req.url, true);
     const path = parsedUrl.pathname;
-    const trimmedPath = path.replace(/^\+|\?+$/g, '');
+    const trimmedPath = path.replace(/^\/+|\/+$/g, '');
     const method = req.method.toLowerCase();
     const queryStringObject = parsedUrl.query;
     const headerObject = req.headers;
@@ -40,9 +40,9 @@ handler.handleReqRes = (req, res) => {
 
     const decoder = new StringDecoder('utf-8');
     let data = "";
-
+    console.log(trimmedPath);
     const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
-
+    // console.log(requestProperties);
     chosenHandler(requestProperties, (statusCode, payload)=> {
          statusCode = typeof(statusCode) === 'number' ? statusCode: 5000;
          payload = typeof(payload) === 'object' ? payload: {};
