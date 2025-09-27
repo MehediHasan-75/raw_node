@@ -1,6 +1,7 @@
 //dependencies
 const http = require('http');
-
+const url = require('url');
+const { queryObjects } = require('v8');
 //app object - module scaffolding
 const app ={};
 
@@ -38,6 +39,16 @@ The requestListener function handles requests from the user, and also the respon
 
 
 app.handleReqRes = (req, res) => {
+    //request handling .
+    //get the url and parse it
+
+    const parsedUrl = url.parse(req.url, true);
+    const path = parsedUrl.pathname;
+    const trimedPath = path.replace(/^\+|\?+$/g, '');
+    const method = req.method.toLowerCase();
+    const queryStringObject = parsedUrl.query;
+    const headerObject = req.headers;
+     // console.log(parsedUrl); 
     //response handle . any request will get response "Hello world"
     res.end("Hello world");
 }
