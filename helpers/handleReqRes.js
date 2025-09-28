@@ -2,6 +2,7 @@ const url = require('url');
 const {StringDecoder} = require('string_decoder');
  const routes = require('../routes');
  const {notFoundHandler} = require('../handlers/routeHandlers/notFoundHandler');
+ const {parseJSON} = require('../helpers/utilities');
 //modle scaffolding
 const handler = {};
 
@@ -55,18 +56,22 @@ handler.handleReqRes = (req, res) => {
     req.on('end', ()=>{
         data += decoder.end();
         // console.log(data);
-        
+        //currently this data is string . convert it to object
+        parsedData = parseJSON(data);
+        requestProperties.body = parsedData;
         chosenHandler(requestProperties, (statusCode, payload)=> {
             statusCode = typeof(statusCode) === 'number' ? statusCode: 5000;
             payload = typeof(payload) === 'object' ? payload: {};
    
+            //convert in string then send back as response
             const payloadString = JSON.stringify(payload);
    
             //return the final response
             res.statusCode = statusCode;
+            //if we did not add this client will not know data type of payload response from server.
+            res.setHeader('Content-Type', 'application/json');
             res.end(payloadString);
        })
-        res.end("Hello world");
     })
     //response handle . any request will get response "Hello world"
 
