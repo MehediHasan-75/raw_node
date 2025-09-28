@@ -8,7 +8,7 @@ environments.staging = {
 };
 
 environments.production = {
-    port: 5000,
+    port: 5001,
     envName: 'production',
 };
 
