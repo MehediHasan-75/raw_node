@@ -147,7 +147,37 @@ handler._users.put = (requestProperties, callback) => {
 };
 
 handler._users.delete = (requestProperties, callback) => {
-
+    const phone = typeof(requestProperties.queryStringObject.phone) === 'string' && requestProperties.queryStringObject.phone.trim().length > 0 ? requestProperties.queryStringObject.phone : false;
+    if(phone){
+        //check if file exists
+        data.read('users', phone, (err, userData) => {
+            if(!err && userData){
+                data.delete('users', phone, (err) => {
+                    if(!err){
+                        callback(200, {
+                            message: "User was deleted succesfully!",
+                        });
+                    }
+                    else{
+                        callback(500, {
+                            error: "There was a error in server!",
+                        });
+                    }
+                });
+                
+            }
+            else{
+                callback(500, {
+                    error: "There was a error in server!",
+                });
+            }
+        });
+    }
+    else{
+        callback(404, {
+            error: "Invalid phone number!",
+        })
+    }
 };
 
 module.exports = handler;
