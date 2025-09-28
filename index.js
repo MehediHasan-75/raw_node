@@ -2,13 +2,10 @@
 const http = require('http');
 
 const {handleReqRes} = require('./helpers/handleReqRes');
+const environment = require('./helpers/environments');
 //app object - module scaffolding
 const app ={};
 
-//configuration
-app.config = {
-    port: 3000
-};
 
 //create server
 /*
@@ -26,8 +23,8 @@ app.createServer = () => {
         callback	Optional. Specifies a function to be executed when the listener has been added
         hostname	Optional. Specifies the IP address we want to listen to
     */
-    server.listen(app.config.port, ()=> {
-        console.log(`listening to port ${app.config.port}`);
+    server.listen(environment.port, ()=> {
+        console.log(`listening to port ${environment.port}`);
     })
 }
 
