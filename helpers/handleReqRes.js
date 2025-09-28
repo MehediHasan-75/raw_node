@@ -2,7 +2,6 @@ const url = require('url');
 const {StringDecoder} = require('string_decoder');
  const routes = require('../routes');
  const {notFoundHandler} = require('../handlers/routeHandlers/notFoundHandler');
-const { stat } = require('fs/promises');
 //modle scaffolding
 const handler = {};
 
@@ -40,19 +39,9 @@ handler.handleReqRes = (req, res) => {
 
     const decoder = new StringDecoder('utf-8');
     let data = "";
-    console.log(trimmedPath);
     const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
     // console.log(requestProperties);
-    chosenHandler(requestProperties, (statusCode, payload)=> {
-         statusCode = typeof(statusCode) === 'number' ? statusCode: 5000;
-         payload = typeof(payload) === 'object' ? payload: {};
 
-         const payloadString = JSON.stringify(payload);
-
-         //return the final response
-         res.statusCode = statusCode;
-         res.end(payloadString);
-    })
  /*
     HTTP sends POST data as a stream of binary chunks (Buffer objects).
     The 'data' event on the request (req) object is fired repeatedly as chunks arrive.
@@ -65,7 +54,18 @@ handler.handleReqRes = (req, res) => {
 
     req.on('end', ()=>{
         data += decoder.end();
-        console.log(data);
+        // console.log(data);
+        
+        chosenHandler(requestProperties, (statusCode, payload)=> {
+            statusCode = typeof(statusCode) === 'number' ? statusCode: 5000;
+            payload = typeof(payload) === 'object' ? payload: {};
+   
+            const payloadString = JSON.stringify(payload);
+   
+            //return the final response
+            res.statusCode = statusCode;
+            res.end(payloadString);
+       })
         res.end("Hello world");
     })
     //response handle . any request will get response "Hello world"
