@@ -55,7 +55,7 @@ handler.handleReqRes = (req, res) => {
     req.on('end', ()=>{
         data += decoder.end();
         // console.log(data);
-        
+
         chosenHandler(requestProperties, (statusCode, payload)=> {
             statusCode = typeof(statusCode) === 'number' ? statusCode: 5000;
             payload = typeof(payload) === 'object' ? payload: {};
@@ -64,9 +64,10 @@ handler.handleReqRes = (req, res) => {
    
             //return the final response
             res.statusCode = statusCode;
+            //if we did not add this client will not know data type of payload response from server.
+            res.setHeader('Content-Type', 'application/json');
             res.end(payloadString);
        })
-        res.end("Hello world");
     })
     //response handle . any request will get response "Hello world"
 
