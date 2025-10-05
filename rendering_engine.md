@@ -65,22 +65,23 @@ An element with `display: none` exists in DOM but **not** in the Render Tree.
 
 ---
 
-### 4. **Layout / Reflow**
+### **4. Layout / Reflow**
 
-* Determines the **geometry** (position and size) of each render tree node.
-* Uses the **CSS box model**, flow rules, and viewport constraints.
-* When content or styles change, layout is recalculated (**reflow**).
+* **What happens:** The **Render Tree** is processed to determine the exact **geometry** of each element.
 
-**Output:** Each element has coordinates, width, height, and stacking context.
+  * Position (`x`, `y`), size (`width`, `height`), margins, padding, and borders are calculated based on the **CSS box model** and **viewport constraints**.
+  * When there’s a change in content or styles (e.g., window resize, content update), **layout** is recalculated (reflow).
+* **Output:** Each element gets **coordinates**, **width**, **height**, and other layout information needed for rendering.
 
----
+### **5. Painting (Rasterization)**
 
-### 5. **Painting (Rasterization)**
+* **What happens:** The browser translates the **layout boxes** into **draw commands** (colors, borders, text, images, etc.).
 
-* Converts each layout box into **draw commands** (borders, text, shadows, images, backgrounds).
-* Produces one or more **display lists** — sequences of drawing instructions.
+  * For each node in the **Layout Tree**, a series of **drawing instructions** are generated for rendering.
+  * This is called **painting** or **rasterization**.
+* **Output:** A **display list** — a sequence of draw commands ready for actual rendering on the screen.
 
-**Example draw commands:**
+Example of draw commands:
 
 ```
 Draw background color
@@ -88,16 +89,14 @@ Draw border
 Draw text
 Draw image
 ```
-
 ---
+### **6. Layering and Compositing**
 
-### 6. **Layering and Compositing**
+* **What happens:** For **complex visual effects** (e.g., `position: fixed`, `opacity`, `transform`), the page is split into **multiple layers**.
 
-* The page is split into multiple **layers** (for complex effects like `position: fixed`, `opacity`, `transform`, etc.).
-* Each layer is **rasterized (converted to bitmaps)**, often using the **GPU**.
-* A **compositor thread** merges these layers into the final frame.
-
-**Output:** A ready-to-display frame sent to the GPU and displayed on screen.
+  * These layers are **rasterized** (converted to bitmaps) and often **processed by the GPU** for better performance.
+  * The **compositor thread** merges these layers into the **final image**.
+* **Output:** A **ready-to-display frame** that is sent to the **GPU** and rendered on the screen.
 
 ---
 
