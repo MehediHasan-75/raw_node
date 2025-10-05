@@ -1,16 +1,9 @@
 # 🎨 What Is a Rendering Engine?
 
-A **rendering engine** (also known as a **layout engine** or **web rendering core**) is the **subsystem inside the browser engine** responsible for **interpreting web documents (HTML, CSS, SVG, images)** and **drawing them onto the screen**.
-
-While the **browser engine** orchestrates and delegates tasks, the **rendering engine** is where the *visual magic* happens — it builds trees, calculates layouts, paints pixels, and composites layers.
-
----
-
+A **rendering engine** (also known as a **layout engine** or **web rendering core**) is the **subsystem inside the browser engine** responsible for,
+- **interpreting web documents (HTML, CSS, SVG, images)** and **drawing them onto the screen**.
+  
 ## ⚙️ Core Components of the Rendering Engine
-
-Let’s go step-by-step through the **main modules** that make up a modern rendering engine like **Blink**, **WebKit**, or **Gecko**.
-
----
 
 ### 1. **HTML Parser**
 
@@ -18,7 +11,6 @@ Let’s go step-by-step through the **main modules** that make up a modern rende
 * Handles incremental parsing — it starts rendering before the entire HTML is downloaded.
 * Fixes invalid markup automatically (browsers are forgiving).
 
-**Output:** DOM Tree
 Example:
 
 ```html
@@ -26,9 +18,17 @@ Example:
   <p>Hello <b>World</b></p>
 </body>
 ```
-
-→ becomes a tree structure of nodes.
-
+**Output:** DOM Tree
+```text
+Document
+└─ html
+   ├─ head
+   └─ body
+      └─ p
+         ├─ #text "Hello "
+         └─ b
+            └─ #text "World"
+```
 ---
 
 ### 2. **CSS Parser**
@@ -36,13 +36,21 @@ Example:
 * Parses CSS rules (from `<style>`, linked stylesheets, and inline styles).
 * Builds a **CSSOM Tree (CSS Object Model)** representing computed style information.
 
-**Output:** CSSOM Tree
 Example rule:
 
 ```css
 p { color: blue; font-size: 16px; }
 ```
-
+**Output:** CSSOM Tree
+```text
+CSSStyleSheet
+└─ CSSRuleList
+   └─ CSSStyleRule
+      ├─ selectorText: "p"
+      └─ style
+         ├─ color: "blue"
+         └─ font-size: "16px"
+```
 ---
 
 ### 3. **Render Tree Construction**
