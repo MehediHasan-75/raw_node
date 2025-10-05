@@ -136,3 +136,13 @@ Browsers store various kinds of data locally:
 |        Data Persistence (Storage) |
 +-----------------------------------+
 ```
+
+### 🪄 In Simple Analogy
+
+Think of your browser like a **restaurant**:
+
+* **You (user)**: Place an order (type a URL).
+* **Browser engine**: The **supplier** who takes your order and coordinates everything.
+* **Rendering engine**: The **chef** who prepares the meal (draws the webpage).
+* **JavaScript engine**: The **assistant chef** who handles dynamic tasks (scripts).
+* **Network module**: The **waiter** bringing ingredients (files) from the web.
