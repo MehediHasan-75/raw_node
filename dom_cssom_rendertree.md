@@ -168,24 +168,103 @@ It contains **only visual elements** (e.g., excludes `<head>` or `display: none`
 
 ### ⚙️ How the Render Tree Is Built
 
-1. **DOM Traversal**
+#### **1. DOM Traversal**
 
-   * The rendering engine walks the DOM tree from the root (`<html>` → `<body>` → descendants).
+The rendering engine starts by **walking through the DOM tree** from the root (usually the `<html>` element) down to its descendants. It processes each node in the tree and looks for visual elements that need to be displayed on the page.
 
-2. **Style Resolution**
+**Example:**
 
-   * For each element, it finds the **matched CSS rules** from the CSSOM and calculates the **computed styles** (e.g., font-size in pixels, final color value).
+```html
+<html>
+  <body>
+    <p>Hello <b>World</b></p>
+  </body>
+</html>
+```
 
-3. **Node Filtering**
+Here, the engine will traverse:
 
-   * Invisible nodes (like `<script>`, `<meta>`, or elements with `display: none`) are **skipped**.
+* `<html>` → `<body>` → `<p>` → `Hello` → `<b>` → `World`
 
-4. **Render Object Creation**
+#### **2. Style Resolution**
 
-   * For each visible element, the engine creates a **Render Object** (e.g., `RenderBlock`, `RenderInline`).
-   * These are arranged into a **Render Tree** mirroring the visual hierarchy.
+For each element, the engine **finds the matched CSS rules** from the **CSSOM** and calculates the **computed styles**. These computed styles determine how an element will be displayed, including properties like `font-size`, `color`, `margin`, etc.
 
----
+* For the `<p>` tag, the rendering engine will look up the styles from the CSSOM, like `color: blue; font-size: 16px;`.
+* For the `<b>` tag, it will check for properties like `font-weight: bold;`.
+
+**Example:**
+
+CSS:
+
+```css
+p { color: blue; font-size: 16px; }
+b { font-weight: bold; }
+```
+
+**Computed Styles for `<p>`**:
+
+* `color: blue`
+* `font-size: 16px`
+
+**Computed Styles for `<b>`**:
+
+* `font-weight: bold`
+
+#### **3. Node Filtering**
+
+**Invisible nodes** are **skipped** during the Render Tree creation. This includes:
+
+* Elements with `display: none`
+* `<script>`, `<meta>`, and other non-visual elements
+
+**Example:**
+
+```html
+<div style="display: none;">Hidden Content</div>
+```
+
+* The browser will **not** include this node in the Render Tree because it has `display: none`, even if it's in the DOM.
+
+#### **4. Render Object Creation**
+
+For each **visible element** (i.e., those that will be painted on the screen), the engine creates a **Render Object**. These objects represent the layout and style of the elements in a way that can be used by the browser’s layout and painting phases.
+
+* **Render Objects** can be:
+
+  * `RenderBlock` (for block-level elements like `<div>`, `<p>`)
+  * `RenderInline` (for inline elements like `<span>`, `<b>`)
+
+These objects are then arranged into the **Render Tree**, which mirrors the **visual hierarchy** of the document.
+
+**Example:**
+
+```html
+<html>
+  <body>
+    <p>Hello <b>World</b></p>
+  </body>
+</html>
+```
+
+In the Render Tree:
+
+```
+RenderRoot
+└── RenderBody (block)
+    └── RenderParagraph (block)
+        ├── RenderText("Hello")
+        └── RenderInline("World", bold)
+```
+
+* **`RenderBody`** is the parent node of **`RenderParagraph`**.
+* **`RenderParagraph`** is the parent of the text node "Hello" and the inline `RenderInline` node for **`<b>`**.
+* **`RenderInline("World", bold)`** indicates that "World" is an inline element with bold styling applied.
+
+#### **Final Steps:**
+
+Once the **Render Tree** is complete, the browser uses it in the **layout** phase to determine the positions and sizes of the elements. After that, the **paint** phase is triggered, where the browser paints the actual pixels on the screen according to the computed styles and layout.
+
 
 ### 🧠 Structure of the Render Tree
 
