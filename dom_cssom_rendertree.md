@@ -1,24 +1,17 @@
-> **DOM → CSSOM → Render Tree**
-
-Each plays a distinct role in rendering and interactivity.
-We’ll break down their **definition**, **structure**, **building process**, and **relationship** with each other.
-
----
-
 # 🧩 1. Document Object Model (DOM)
 
 ### 🔹 What It Is
 
 The **DOM (Document Object Model)** is a **tree-structured representation** of the HTML document.
-It defines the **content** and **hierarchical relationships** (parent–child) of all elements on a web page.
 
-It is **language-agnostic** — JavaScript, Python (via libraries), or browser internals can manipulate it.
-
+### It is **language-agnostic** — JavaScript, Python (via libraries), or browser internals can manipulate it.
 ---
-
 ### ⚙️ How the DOM Is Built
 
-1. **Tokenization** – The rendering engine’s **HTML tokenizer** reads the raw HTML as a character stream and breaks it into **tokens** (e.g., start tags, end tags, text nodes, comments).
+1. **Raw File Loading**:
+   The browser receives the HTML document as raw bytes. This is the initial step where the browser fetches the HTML file from the server.
+   
+2. **Tokenization** – The rendering engine’s **HTML tokenizer** reads the raw HTML as a character stream and breaks it into **tokens** (e.g., start tags, end tags, text nodes, comments).
 
    ```html
    <p>Hello <b>World</b></p>
@@ -26,16 +19,44 @@ It is **language-agnostic** — JavaScript, Python (via libraries), or browser i
 
    → Tokens: `<p>`, `Hello`, `<b>`, `World`, `</b>`, `</p>`
 
-2. **Tree Construction** – The **HTML tree builder** uses these tokens to create nodes and attach them in a **parent–child hierarchy**.
+3. **Object Creation**:
+   Each tag is turned into an object, with each element becoming a node in the DOM tree.
 
-   * `<html>` is the root.
-   * `<body>` is its child.
-   * `<p>` is a child of `<body>`, and so on.
+   **Example:**
+   For the previous tokens, the browser creates nodes such as:
 
-3. **Incremental Parsing** – The browser can build and display partial DOMs even before the full HTML file downloads.
+   * `<p>` becomes an element node.
+   * "Hello" becomes a text node.
+   * `<b>` becomes another element node.
+   * "World" becomes another text node.
+   * `</b>` closes the bold tag, becoming part of the DOM structure.
+
+5. **Node Relationships**:
+   The **HTML tree builder** of rendering engine uses these tokens to create nodes and attach them in a **parent–child hierarchy**.
+
+   **Example:**
+   After node creation, the DOM tree would look something like:
+
+   ```
+   Document
+   └── html
+       └── body
+           └── p
+               ├── "Hello"
+               └── b
+                   └── "World"
+   ```
+
+   * The `<p>` node is the parent of both the "Hello" text node and the `<b>` node.
+   * The `<b>` node is the parent of the "World" text node.
+
+6. **DOM Ready**:
+   Once the DOM is built, it is ready to be manipulated or rendered.
+
+   **Example:**
+   After parsing, the browser can now access and manipulate the structure using JavaScript. For example, if you run `document.querySelector('p')`, you get the `<p>` element, and you can change its content dynamically.
 
 ---
-
 ### 🧠 Structure of the DOM
 
 Each node in the DOM is one of these types:
@@ -45,36 +66,13 @@ Each node in the DOM is one of these types:
 * **Attribute node** (e.g., `class="title"`)
 * **Comment node**
 
-**Example:**
-
-```html
-<body>
-  <p class="intro">Hello <b>World</b></p>
-</body>
-```
-
-**DOM Tree Structure:**
-
-```
-Document
-└── html
-    └── body
-        └── p (class="intro")
-            ├── "Hello"
-            └── b
-                └── "World"
-```
-
----
-
 ### 🧮 DOM Properties
 
 * **Dynamic:** Can be modified in real time by JavaScript (`document.createElement()`, `.innerHTML`, etc.)
 * **Hierarchical:** Nodes form a tree that represents document nesting.
 * **Live structure:** Any JS modification updates what you see visually.
-
+* **Incremental Parsing** – The browser can build and display partial DOMs even before the full HTML file downloads.
 ---
-
 # 🎨 2. CSS Object Model (CSSOM)
 
 ### 🔹 What It Is
@@ -89,19 +87,20 @@ It’s like the “style database” that browsers use to calculate how elements
 
 1. **CSS Fetching**
 
-   * The rendering engine requests all linked CSS files (`<link>`, `<style>`, and inline styles).
+   * The rendering engine requests all linked CSS files (`<link>`, `<style>`, and inline styles) from the browser engine. The browser engine then sends back the CSS files using the document loader.
 
 2. **Tokenization and Parsing**
 
    * CSS text is parsed into **selectors** and **declarations**.
-   * Example:
 
-     ```css
-     p { color: blue; font-size: 16px; }
-     b { font-weight: bold; }
-     ```
+   **Example:**
 
-     → Tokens: `p`, `color`, `blue`, `font-size`, `16px`, etc.
+   ```css
+   p { color: blue; font-size: 16px; }
+   b { font-weight: bold; }
+   ```
+
+   → Tokens: `p`, `color`, `blue`, `font-size`, `16px`, etc.
 
 3. **Rule Tree Construction**
 
@@ -147,11 +146,10 @@ CSSStyleSheet
 
 ### 🧮 CSSOM Properties
 
-* **Separate from DOM** but **linked** by selectors.
+* **Separate from the DOM** but **linked** by selectors.
 * **Dynamic:** Can be modified via JavaScript (`document.styleSheets`, `element.style.color = "red"`).
 * **Essential for styling:** Without CSSOM, the browser can’t compute layout or paint.
 
----
 
 # 🧱 3. Render Tree
 
@@ -317,4 +315,3 @@ RenderBody
 | **DOM**         | Document structure/content | HTML        | Scripting, Structure | ❌                      |
 | **CSSOM**       | Styling information        | CSS         | Style computation    | ❌                      |
 | **Render Tree** | Visual representation      | DOM + CSSOM | Layout + Painting    | ✅                      |
-
