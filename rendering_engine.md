@@ -123,17 +123,6 @@ Screen (Display Frame)
 
 ---
 
-## 🧩 Interaction with Other Browser Components
-
-| Component             | Role                                                                 |
-| --------------------- | -------------------------------------------------------------------- |
-| **Browser Engine**    | Orchestrates and triggers rendering steps.                           |
-| **JavaScript Engine** | Can modify DOM/CSSOM → triggers reflow/repaint.                      |
-| **Network Module**    | Fetches HTML, CSS, JS, images for the rendering engine to process.   |
-| **GPU Process**       | Handles rasterization and compositing for high-performance graphics. |
-
----
-
 ## ⚡ Optimizations in Modern Rendering Engines
 
 1. **Incremental Rendering** – starts painting before the full page is loaded.
@@ -171,21 +160,3 @@ Blink (used by Chrome and Edge) has submodules like:
 | Paint             | Draw visuals        | Display list    |
 | Compositing       | Merge layers        | Frame on screen |
 
----
-
-## 🔍 Rendering Engines by Browser
-
-| Browser               | Rendering Engine | JS Engine              |
-| --------------------- | ---------------- | ---------------------- |
-| Chrome / Edge / Opera | **Blink**        | V8                     |
-| Safari                | **WebKit**       | JavaScriptCore (Nitro) |
-| Firefox               | **Gecko**        | SpiderMonkey           |
-| Old IE                | **Trident**      | Chakra                 |
-
----
-
-## 🖼️ In Simple Terms
-
-* **Browser Engine** = Project Manager (coordinates everyone).
-* **Rendering Engine** = Artist (draws the webpage).
-* **JavaScript Engine** = Brain (adds logic and interaction).
