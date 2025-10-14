@@ -1,21 +1,9 @@
-Excellent, Mehedi — you’ve now reached one of the **most important and brain-twisting** topics in JavaScript:
-the **Event Loop** and **Web APIs**.
-
-These are what make JavaScript — though single-threaded — feel *asynchronous* and *non-blocking*.
-
-Let’s go step-by-step, from fundamentals to deep internal details 👇
-
----
-
 # ⚙️ JavaScript’s Execution Model
 
 JavaScript is **single-threaded**, meaning it can **only execute one task at a time** on the **main thread** — there’s only one *call stack*.
 
 But JS can still handle **asynchronous tasks** (like fetching data, timers, and UI events) using the **Event Loop**, **Web APIs**, and **callback queues**.
 
-So how does it do this? Let’s break it down.
-
----
 
 # 🧠 The Key Players
 
@@ -28,9 +16,6 @@ There are **five** major components you need to understand:
 4️⃣ Callback / Task Queue
 5️⃣ Event Loop
 ```
-
-Let’s go through each in order of how they work together 👇
-
 ---
 
 ## 🧩 1. Call Stack (Execution Context Stack)
@@ -314,7 +299,3 @@ Think of:
 * **Callback Queue** → Completed orders waiting to be served
 * **Event Loop** → The Waiter, checking if the chef is free to serve next order
 * **Microtasks** → VIP orders (promises) that always get served first
-
----
-
-Would you like me to show a **diagram or animation-style visual** explaining how the **event loop**, **Web APIs**, **callback queue**, and **microtask queue** interact in real time (like a moving flow between them)?
