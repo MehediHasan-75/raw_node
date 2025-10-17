@@ -3,7 +3,8 @@ const http = require('http');
 
 const {handleReqRes} = require('./helpers/handleReqRes');
 const environment = require('./helpers/environments');
-const data = require('./lib/data');
+const notifications = require('./helpers/notifications');
+// const data = require('./lib/data');
 //app object - module scaffolding
 const app ={};
 
@@ -24,7 +25,10 @@ const app ={};
 // data.delete('test', 'newFile', (err) => {
 //     console.log("error is, ", err);
 // });
-
+notifications.sendTwilioSMS('+18777804236', "Cat daddy", (res) => {
+   console.log(res);
+});
+ 
 //create server
 /*
 The http.createServer() method turns your computer into an HTTP server.
@@ -32,6 +36,7 @@ The HTTP Server object can listen to ports on your computer and execute a functi
 The http.createServer() method creates an HTTP Server object.
 syntext: http.createServer(requestListener);
 */
+
 app.createServer = () => {
     const server = http.createServer(app.handleReqRes);
     /*
