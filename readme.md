@@ -66,7 +66,7 @@ It provides **user authentication, token-based authorization**, and a **URL upti
 ### 1️⃣ Clone the repo
 
 ```bash
-git clone https://github.com/yourusername/raw-node-uptime-api.git
+git clone https://github.com/MehediHasan-75/raw_node.git
 cd raw-node-uptime-api
 ```
 
@@ -76,7 +76,7 @@ Edit `/helpers/environments.js` and add your **Twilio credentials**:
 
 ```js
 twilio: {
-  fromPhone: '+1234567890',
+  fromPhone: 'your twilio number',
   accountSid: 'your_account_sid',
   authToken: 'your_auth_token',
 }
@@ -87,16 +87,11 @@ twilio: {
 Start in **staging** (default):
 
 ```bash
-node index.js
+npm run dev
 ```
 
-Start in **production**:
 
-```bash
-NODE_ENV=production node index.js
-```
-
-The server will start on port `3000` (staging) or `5001` (production).
+The server will start on port `3000` (staging).
 
 ---
 
